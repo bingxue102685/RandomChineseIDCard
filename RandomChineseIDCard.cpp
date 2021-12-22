@@ -50,7 +50,7 @@ int getDaysInMonth(int year, int month)
 	return totalDaysInMonth;
 }
 
-std::string RandomIDCard(int male, std::string& birthDate)
+std::string RandomIDCard(int male, int ageRangeBegin, int ageRangeEnd, std::string& birthDate)
 {
 	// 地区码
 	int cities[] = {
@@ -60,7 +60,7 @@ std::string RandomIDCard(int male, std::string& birthDate)
 	time_t now = time(0);
 	tm* ltm = localtime(&now);
 	int curYear = 1900 + ltm->tm_year;
-	int randomYear = curYear - rand() % 30 - 20 + 1;
+	int randomYear = curYear - (rand() % (ageRangeEnd - ageRangeBegin) + ageRangeBegin);
 	int randomMonth = rand() % 12 + 1;
 	int randomDay = getDaysInMonth(randomYear, randomMonth);
 	std::stringstream idSS;
@@ -155,7 +155,7 @@ int main()
 		int male = rand() % 2;
 		// 随机ID
 		std::string birthDate;
-		std::string randomID = RandomIDCard(male, birthDate);
+		std::string randomID = RandomIDCard(male, 20, 50, birthDate);
 		// 随机名字
 		std::string name = RandomName(male);
 
